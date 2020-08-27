@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+    apache_php:
+        container_name:
+            apache_php_completo
+
+        build:
+            context: .
+            dockerfile: Dockerfile
+
+        restart: always
+
+        ports:
+            - 80:80
+            - 443:443
+
+        volumes:
+            - /home/gspadilha/Desktop/DEV/www:/var/www/html
+
+        links:
+            - bancodedados
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+
+        ports:
+            - 8080:80
+
+        links:
+            - "bancodedados:db"
+
+    bancodedados:
+        image: mariadb:latest
+
+        ports:
+            - 3306:3306
+
+        environment:
+            MYSQL_DATABASE: developer
+            MYSQL_USER: developer
+            MYSQL_PASSWORD: developer
+            MYSQL_ROOT_PASSWORD: developer
+
+        volumes:
+            - /home/gspadilha/Desktop/DEV/dbs:/var/lib/mysql
