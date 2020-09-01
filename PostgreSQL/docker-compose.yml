@@ -4,9 +4,10 @@ services:
   postgres-compose:
     image: postgres
     environment:
+      POSTGRES_USER: "gspadilha"
       POSTGRES_PASSWORD: "gspadilha&admin!"
     ports:
-      - "15432:5432"
+      - "5432:5432"
     volumes:
       - /home/$USER/Desktop/DEV/Docker-Volumes/PostgreSQL:/var/lib/postgresql/data 
     networks:
