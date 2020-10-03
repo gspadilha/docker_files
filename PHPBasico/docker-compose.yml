@@ -15,7 +15,7 @@ services:
             - "443:443"
 
         volumes:
-            - /home/gspadilha/Desktop/DEV/www:/var/www/html
+            - /home/$USER/Desktop/DEV/www:/var/www/html
 
         links:
             - bancodedados
@@ -40,12 +40,12 @@ services:
 
         environment:
             MYSQL_DATABASE: developer
-            MYSQL_USER: developer
-            MYSQL_PASSWORD: developer
-            MYSQL_ROOT_PASSWORD: developer
+            MYSQL_USER: gspadilha
+            MYSQL_PASSWORD: gspadilha
+            MYSQL_ROOT_PASSWORD: gspadilha
 
         ports:
             - "3306:3306"
 
         volumes:
-            - /home/gspadilha/Desktop/DEV/dbs:/var/lib/mysql
+            - /home/$USER/Desktop/db/MariaDB:/var/lib/mysql

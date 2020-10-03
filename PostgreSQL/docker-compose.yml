@@ -5,11 +5,11 @@ services:
     image: postgres
     environment:
       POSTGRES_USER: "gspadilha"
-      POSTGRES_PASSWORD: "gspadilha&admin!"
+      POSTGRES_PASSWORD: "gspadilha"
     ports:
       - "5432:5432"
     volumes:
-      - /home/$USER/Desktop/DEV/Docker-Volumes/PostgreSQL:/var/lib/postgresql/data 
+      - /home/$USER/Desktop/db/PostgreSQL:/var/lib/postgresql/data 
     networks:
       - postgres-compose-network
       
@@ -17,7 +17,7 @@ services:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: "gs.padilha@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "gspadilha&admin!"
+      PGADMIN_DEFAULT_PASSWORD: "gspadilha"
     ports:
       - "16543:80"
     depends_on:
