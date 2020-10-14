@@ -48,4 +48,4 @@ services:
             - "3306:3306"
 
         volumes:
-            - /home/$USER/Desktop/db/MariaDB:/var/lib/mysql
+            - /home/$USER/Desktop/dbs/MariaDB:/var/lib/mysql

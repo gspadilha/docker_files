@@ -24,7 +24,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - /home/$USER/Desktop/db/MongoDB:/data/db
+      - /home/$USER/Desktop/dbs/MongoDB:/data/db
     networks:
       - mongo-compose-network
 

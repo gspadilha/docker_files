@@ -43,4 +43,4 @@ services:
             MYSQL_ROOT_PASSWORD: gspadilha
 
         volumes:
-            - /home/$USER/Desktop/db/MariaDB:/var/lib/mysql
+            - /home/$USER/Desktop/dbs/MariaDB:/var/lib/mysql
