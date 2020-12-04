@@ -1,4 +1,4 @@
-FROM php:7.3.18-apache
+FROM php:7.3.25-apache
 
 # cria a pasta publica e já permissão geral
 RUN mkdir /var/www/html/public && chmod -R 777 /var/www/html/*

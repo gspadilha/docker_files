@@ -1,4 +1,4 @@
-FROM php:7.3.18-apache
+FROM php:7.3.25-apache
 
 ENV ACCEPT_EULA=Y
 
