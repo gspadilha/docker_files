@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      args:
+        user: gspadilha
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+
+    image: php_com_oci_sqlsrv
+    container_name: php_com_oci_sqlsrv-app
+    restart: unless-stopped
+    working_dir: /var/www/
+
+    ports:
+      - 80:80
+      - 443:443
+
+    volumes:
+      - /home/$USER/Desktop/DEV/www:/var/www/html
+
+    networks:
+      - php_com_oci_sqlsrv
+
+networks:
+  php_com_oci_sqlsrv:
+    driver: bridge
