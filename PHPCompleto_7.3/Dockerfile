@@ -1,9 +1,6 @@
-FROM php:7.3.25-apache
+FROM php:7.3.26-apache
 
 ENV ACCEPT_EULA=Y
-
-# cria a pasta publica e já permissão geral
-RUN mkdir /var/www/html/public && chmod -R 777 /var/www/html/*
 
 # primeira atualização
 RUN apt-get update && apt-get upgrade -y
@@ -73,6 +70,9 @@ RUN echo 'instantclient,/opt/oracle/instantclient_12_1/' | pecl install oci8 && 
 
 # Install SQLSRV extensions
 RUN pecl install sqlsrv pdo_sqlsrv && docker-php-ext-enable sqlsrv pdo_sqlsrv
+
+# cria a pasta publica e já permissão geral
+RUN mkdir /var/www/html/public && chmod -R 777 /var/www/html/*
 
 # configs báscias
 COPY vhost.conf /etc/apache2/sites-enabled/000-default.conf

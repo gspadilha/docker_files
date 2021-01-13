@@ -1,7 +1,4 @@
-FROM php:7.3.25-apache
-
-# cria a pasta publica e já permissão geral
-RUN mkdir /var/www/html/public && chmod -R 777 /var/www/html/*
+FROM php:7.3.26-apache
 
 # primeira atualização
 RUN apt-get update && apt-get upgrade -y
@@ -34,6 +31,9 @@ RUN docker-php-ext-configure gd --with-gd --with-webp-dir \
     --with-png-dir --with-zlib-dir --with-xpm-dir \
     --with-jpeg-dir=/usr/lib \
     --with-freetype-dir=/usr/include/freetype2
+
+# cria a pasta publica e já permissão geral
+RUN mkdir /var/www/html/public && chmod -R 777 /var/www/html/*
 
 # configs báscias
 COPY vhost.conf /etc/apache2/sites-enabled/000-default.conf
