@@ -8,13 +8,13 @@ docker run --name oracle_18 \
 	-v /home/$USER/Desktop/dbs/Oracle/oradata:/opt/oracle/oradata \
 	-v /home/$USER/Desktop/dbs/Oracle/scripts/setup:/opt/oracle/scripts/setup \
 	-v /home/$USER/Desktop/dbs/Oracle/scripts/startup:/opt/oracle/scripts/startup \
-oracle/database:18.4.0-xe
+	oracle/database:18.4.0-xe
 
 // conectar como SYS
-
 alter session set "_ORACLE_SCRIPT"=true;
 
-CREATE USER INATIVOS identified by eh1n4t1v0s
-ALTER USER INATIVOS IDENTIFIED BY eh1n4t1v0s ACCOUNT UNLOCK;
-GRANT CONNECT TO INATIVOS;
+CREATE USER GPADILHA identified by gp4d1lh4;
 
+GRANT CONNECT TO GPADILHA;
+
+// conectar como o usuário criado

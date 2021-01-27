@@ -1,0 +1,52 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      args:
+        user: gspadilha
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+
+    image: php_com_oracle
+    container_name: php_com_oracle-app
+    restart: unless-stopped
+    working_dir: /var/www/
+
+    ports:
+      - 8000:80
+      - 4430:443
+
+    volumes:
+      - /home/$USER/Desktop/DEV/www:/var/www/html
+
+    networks:
+      - php_com_oracle
+
+    links:
+      - bancodedados
+
+  bancodedados:
+    container_name: oracle18
+    image: oracle/database:18.4.0-xe
+
+    environment:
+      - ORACLE_PWD=s3nh4s3cr3t4
+      - ORACLE_CHARACTERSET=AL32UTF8
+
+    ports:
+      - 15210:1521
+      - 55000:5500
+
+    volumes:
+      - /home/$USER/Desktop/dbs/Oracle/oradata:/opt/oracle/oradata \
+      - /home/$USER/Desktop/dbs/Oracle/scripts/setup:/opt/oracle/scripts/setup \
+      - /home/$USER/Desktop/dbs/Oracle/scripts/startup:/opt/oracle/scripts/startup \
+
+    networks:
+      - php_com_oracle
+
+networks:
+  php_com_oracle:
+    driver: bridge

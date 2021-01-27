@@ -1,4 +1,4 @@
-FROM php:8.0.1-apache
+FROM php:7.4.14-apache
 
 ENV ACCEPT_EULA=Y
 
@@ -31,8 +31,8 @@ RUN apt-get install -y apt-utils \
 # limpeza
 RUN apt-get clean autoclean && apt-get autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-# ORACLE oci 
-RUN mkdir /opt/oracle && cd /opt/oracle     
+# ORACLE oci
+RUN mkdir /opt/oracle && cd /opt/oracle
 
 # move o instant client pra o docker
 ADD instantclient-basic-linux.x64-12.1.0.2.0.zip /opt/oracle
@@ -70,7 +70,7 @@ RUN docker-php-ext-install curl \
     bcmath \
     gd \
     pdo \
-    pdo_mysql \ 
+    pdo_mysql \
     sockets \
     && pecl install xdebug && docker-php-ext-enable xdebug
 
@@ -84,8 +84,8 @@ RUN docker-php-ext-configure intl && docker-php-ext-install intl
 #    --with-freetype-dir=/usr/include/freetype2
 
 # Install Oracle extensions
-RUN echo 'instantclient,/opt/oracle/instantclient_12_1/' | pecl install oci8-3.0.1 && docker-php-ext-enable oci8 \ 
-    && docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_12_1,12.1 && docker-php-ext-install pdo_oci 
+RUN echo 'instantclient,/opt/oracle/instantclient_12_1/' | pecl install oci8-2.2.0 && docker-php-ext-enable oci8 \
+    && docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_12_1,12.1 && docker-php-ext-install pdo_oci
 
 # Install SQLSRV extensions
 RUN pecl install sqlsrv pdo_sqlsrv && docker-php-ext-enable sqlsrv pdo_sqlsrv
