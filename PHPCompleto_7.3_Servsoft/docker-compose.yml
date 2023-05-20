@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+
+    image: servsoft
+    container_name: servsoft-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+
+    ports:
+      - 8090:80
+      - 443:443
+
+    #volumes:
+      #- C:\web\docker\servsoft:/var/www/html
+
+    networks:
+      - servsoft
+
+networks:
+  servsoft:
+    driver: bridge

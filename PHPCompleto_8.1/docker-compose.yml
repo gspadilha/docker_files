@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+
+    image: php81
+    container_name: php81-app
+    restart: unless-stopped
+    working_dir: /var/www/
+
+    ports:
+      - 80:80
+      - 443:443
+
+    volumes:
+      - C:\web\docker\suprg_php81:/var/www/html
+
+    networks:
+      - php81
+
+networks:
+  php81:
+    driver: bridge

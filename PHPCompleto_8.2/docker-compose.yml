@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+
+    image: php82
+    container_name: php82-app
+    restart: unless-stopped
+    working_dir: /var/www/html/public
+
+    ports:
+      - 8080:80
+      - 443:443
+
+    #volumes:
+      #- C:\web\docker\php82:/var/www/html
+
+    networks:
+      - php82
+
+networks:
+  php82:
+    driver: bridge
