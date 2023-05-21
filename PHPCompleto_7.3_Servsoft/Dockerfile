@@ -3,8 +3,9 @@ FROM php:7.3.33-apache
 ENV ACCEPT_EULA=Y
 ENV NODE_VERSION=18.16.0
 ENV NVM_DIR=/root/.nvm
-ENV PATH "$PATH"
 ENV LD_LIBRARY_PATH /opt/oracle/instantclient_12_1:${LD_LIBRARY_PATH}
+
+ENV PATH "$PATH"
 ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 ENV PATH="/root/.composer/vendor/bin/:${PATH}"
 
@@ -33,7 +34,7 @@ RUN apt-get install -y apt-utils \
     libzip-dev \
     libaio1 \
     libonig-dev \
-	git
+    git
 
 # Executar limpeza do apt
 RUN apt-get clean autoclean && apt-get autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -46,7 +47,8 @@ RUN docker-php-ext-install curl \
     gd \
     pdo \
     pdo_mysql \ 
-    sockets
+    sockets \
+    zip
 
 # Ativar extensões xdebug	
 #RUN pecl install xdebug && docker-php-ext-enable xdebug
@@ -76,7 +78,7 @@ RUN  unzip /opt/oracle/instantclient-basic-linux.x64-12.1.0.2.0.zip -d /opt/orac
     && rm -rf /opt/oracle/*.zip
 
 # Ativar extensões oci
-RUN echo 'instantclient,/opt/oracle/instantclient_12_1/' | pecl install oci8-3.2.1 \
+RUN echo 'instantclient,/opt/oracle/instantclient_12_1/' | pecl install oci8-2.2.0 \
 	&& docker-php-ext-enable oci8 \ 
     && docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_12_1,12.1 \
 	&& docker-php-ext-install pdo_oci 
@@ -99,10 +101,10 @@ RUN TEMP_DEB="$(mktemp)" \
  && rm -f "$TEMP_DEB"
 
 # Ativar extensões sqlsrv
-RUN pecl install sqlsrv pdo_sqlsrv && docker-php-ext-enable sqlsrv pdo_sqlsrv
+RUN pecl install sqlsrv-5.9.0 pdo_sqlsrv-5.9.0 && docker-php-ext-enable sqlsrv pdo_sqlsrv
 
 # Ativar extensões xdebug
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN pecl install xdebug-3.1.6 && docker-php-ext-enable xdebug
 
 # Instalar NVM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
@@ -120,7 +122,10 @@ RUN npm -g install yarn npm
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # cria a pasta publica e permissão geral
-RUN mkdir -p /var/www/html && mkdir -p /var/www/html/public \
+RUN mkdir -p /var/www/html \
+	&& mkdir -p /var/www/html/marca_php_servsoft \
+	&& mkdir -p /var/www/html/marca_php_servsoft/zf \
+	&& mkdir -p /var/www/html/marca_php_servsoft/zf/public \
 	&& chmod -R 777 /var/www/html/* \
 	&& mkdir -p /var/www/certificados
 
