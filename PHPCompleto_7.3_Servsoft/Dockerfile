@@ -3,7 +3,7 @@ FROM php:7.3.33-apache
 ENV ACCEPT_EULA=Y
 ENV NODE_VERSION=18.16.0
 ENV NVM_DIR=/root/.nvm
-ENV LD_LIBRARY_PATH /opt/oracle/instantclient_12_1:${LD_LIBRARY_PATH}
+ENV LD_LIBRARY_PATH /opt/oracle/instantclient_21_10:${LD_LIBRARY_PATH}
 
 ENV PATH "$PATH"
 ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
@@ -14,14 +14,16 @@ RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y
 
 # Instalar aplicativos básicos necessários para o servidor PHP/Apache
 RUN apt-get install -y apt-utils \
+	build-essential \
+	shared-mime-info \
     libcurl4-gnutls-dev \
-    libxml2-dev \
     curl \
     wget \
     vim \
     unzip \
     libxml2 \
-    zlib1g-dev \
+	libxml2-dev \
+	zlib1g-dev \
     libicu-dev \
     g++ \
     gnupg2 \
@@ -34,10 +36,12 @@ RUN apt-get install -y apt-utils \
     libzip-dev \
     libaio1 \
     libonig-dev \
-    git
+    git \
+	libpq-dev \
+	libaio-dev  
 
 # Executar limpeza do apt
-RUN apt-get clean autoclean && apt-get autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,log}/
+RUN apt-get clean -y && apt-get autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # Ativar extensões básicas do PHP
 RUN docker-php-ext-install curl \
@@ -66,21 +70,23 @@ RUN docker-php-ext-configure intl && docker-php-ext-install intl
 RUN mkdir /opt/oracle && cd /opt/oracle     
 
 # Mover o instalador do instant client da oracle pra o docker
-ADD instantclient-basic-linux.x64-12.1.0.2.0.zip /opt/oracle
-ADD instantclient-sdk-linux.x64-12.1.0.2.0.zip /opt/oracle
+ADD instantclient-basic-linux.x64-21.10.0.0.0dbru.zip /opt/oracle
+ADD instantclient-sdk-linux.x64-21.10.0.0.0dbru.zip /opt/oracle
+ADD instantclient-sqlplus-linux.x64-21.10.0.0.0dbru.zip /opt/oracle
 
 # Instalar o instant client da oracle
-RUN  unzip /opt/oracle/instantclient-basic-linux.x64-12.1.0.2.0.zip -d /opt/oracle \
-    && unzip /opt/oracle/instantclient-sdk-linux.x64-12.1.0.2.0.zip -d /opt/oracle \
-    && ln -s /opt/oracle/instantclient_12_1/libclntsh.so.12.1 /opt/oracle/instantclient_12_1/libclntsh.so \
-    && ln -s /opt/oracle/instantclient_12_1/libclntshcore.so.12.1 /opt/oracle/instantclient_12_1/libclntshcore.so \
-    && ln -s /opt/oracle/instantclient_12_1/libocci.so.12.1 /opt/oracle/instantclient_12_1/libocci.so \
+RUN  unzip /opt/oracle/instantclient-basic-linux.x64-21.10.0.0.0dbru.zip -d /opt/oracle \
+    && unzip /opt/oracle/instantclient-sdk-linux.x64-21.10.0.0.0dbru.zip -d /opt/oracle \
+	&& unzip /opt/oracle/instantclient-sqlplus-linux.x64-21.10.0.0.0dbru.zip -d /opt/oracle \
+    #&& ln -s /opt/oracle/instantclient_21_10/libclntsh.so.21.1 /opt/oracle/instantclient_21_10/libclntsh.so \
+    #&& ln -s /opt/oracle/instantclient_21_10/libclntshcore.so.21.1 /opt/oracle/instantclient_21_10/libclntshcore.so \
+    #&& ln -s /opt/oracle/instantclient_21_10/libocci.so.21.1 /opt/oracle/instantclient_21_10/libocci.so \
     && rm -rf /opt/oracle/*.zip
 
 # Ativar extensões oci
-RUN echo 'instantclient,/opt/oracle/instantclient_12_1/' | pecl install oci8-2.2.0 \
+RUN echo 'instantclient,/opt/oracle/instantclient_21_10/' | pecl install oci8-2.2.0 \
 	&& docker-php-ext-enable oci8 \ 
-    && docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_12_1,12.1 \
+    && docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_21_10,21.1 \
 	&& docker-php-ext-install pdo_oci 
 
 # Instalar o ODBC do Microsoft SQL Server
