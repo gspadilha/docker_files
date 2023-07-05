@@ -125,7 +125,7 @@ RUN . "$NVM_DIR/nvm.sh" \
 RUN npm -g install yarn npm
 
 # Instalar o composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.0.8
 
 # cria a pasta publica e permissão geral
 RUN mkdir -p /var/www/html \

@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      args:
+        user: gspadilha
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+
+    image: laravel_vue
+    container_name: laravel_vue-app
+    restart: unless-stopped
+    working_dir: /var/www/
+
+    ports:
+      - 8091:80
+      #- 443:443
+
+    #volumes:
+      #- /home/$USER/Desktop/DEV/www:/var/www/html
+
+    networks:
+      - laravel_vue
+
+networks:
+  laravel_vue:
+    driver: bridge
