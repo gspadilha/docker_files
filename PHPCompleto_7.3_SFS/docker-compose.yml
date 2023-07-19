@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+
+    image: sfs
+    container_name: sfs-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+
+    ports:
+      - 9073:80
+      #- 44390:443
+
+    #volumes:
+      #- C:\web\docker\servsoft:/var/www/html
+
+    networks:
+      - sfs
+
+networks:
+  sfs:
+    driver: bridge
